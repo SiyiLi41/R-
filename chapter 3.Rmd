@@ -1,0 +1,566 @@
+---
+title: "2022-可视化diamonds数据集"
+author: "Siyi Li"
+date: '2022-04-17'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+```
+
+```{r}
+head(diamonds)
+```
+
+
+```{r}
+names(diamonds)
+```
+
+# point chart
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat))+
+  geom_point(color="brown4")+
+  ggtitle("diamond carat and price")+
+  labs(x="Price min dollar", y="Carat")+
+  theme(plot.title = element_text(size=20, face="bold"))
+
+
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat))+
+  geom_point(color="brown4")+
+  ggtitle("diamond carat and price")+
+  labs(x="Price min dollar", y="Carat")+
+  theme(plot.title = element_text(size=20, face="bold"))+
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())
+```
+```{r}
+ggplot(diamonds, aes(x=price, y=carat))+
+  geom_point(color="brown4")+
+  ggtitle("diamond carat and price")+
+  labs(x="Price min dollar", y="Carat")+
+  theme(plot.title = element_text(size=20, face="bold"))+
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())+
+  theme(axis.text.x = element_text(angle = 50, size = 10, vjust = 0.5))
+```
+```{r}
+ggplot(diamonds, aes(x=price, y=carat))+
+  geom_point(color="brown4")+
+  ggtitle("diamond carat and price")+
+  labs(x="Price min dollar", y="Carat")+
+  theme(plot.title = element_text(size=20, face="bold"))+
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())+
+  theme(axis.text.x = element_text(angle = 50, size = 10, vjust = 0.5))+
+  theme(axis.text.x = element_text(color="chocolate", vjust = 0.45),
+        axis.text.y = element_text(color="brown1", vjust = 0.45))
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat))+
+  geom_point(color="brown4")+
+  ggtitle("diamond carat and price")+
+  labs(x="Price min dollar", y="Carat")+
+  theme(plot.title = element_text(size=20, face="bold"))+
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())+
+  theme(axis.text.x = element_text(angle = 50, size = 10, vjust = 0.5))+
+  theme(axis.text.x = element_text(color="chocolate", vjust = 0.45),
+        axis.text.y = element_text(color="brown1", vjust = 0.45))+
+  ylim(0,0.8)+
+  xlim(250, 1500)
+
+```
+
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(cut)))+
+  geom_point()
+```
+
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(clarity)))+
+  geom_point()
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(clarity)))+
+  geom_point()+
+  theme(legend.title = element_blank())+
+  theme(legend.title = element_text(color = "darkblue", size=7, face="bold"))+
+  scale_color_discrete(name="By different grids of clarity")+
+  theme(legend.key = element_rect(fill = "dodgerblue"))+
+  guides(color=guide_legend(override.aes = list(size=4))) #change the size of the symbols used in legend
+
+  
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(clarity)))+
+  geom_point()+
+  theme(legend.title = element_blank())+
+  theme(legend.title = element_text(color = "darkblue", size=7, face="bold"))+
+  scale_color_discrete(name="By different grids of clarity")+
+  theme(legend.key = element_rect(fill = "dodgerblue"))+
+  guides(color=guide_legend(override.aes = list(size=4)))+
+  geom_line(color="darkcyan")+
+  theme(panel.background =element_rect(fill="chocolate3"))+ #change the background 
+  theme(plot.background =element_rect(fill="skyblue")) #change the plot background
+```
+
+
+```{r}
+table(diamonds$cut)
+table(diamonds$clarity)
+table(diamonds$color)
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(clarity)))+
+  geom_point()+
+  theme(legend.title = element_blank())+
+  theme(legend.title = element_text(color = "darkblue", size=7, face="bold"))+
+  scale_color_discrete(name="By different grids of clarity")+
+  theme(legend.key = element_rect(fill = "dodgerblue"))+
+  guides(color=guide_legend(override.aes = list(size=4)))+
+  geom_line(color="darkcyan")+
+  theme(panel.background =element_rect(fill="chocolate3"))+
+  theme(plot.background =element_rect(fill="skyblue"))+
+  facet_wrap(~cut, nrow = 4)
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(clarity)))+
+  geom_point()+
+  theme(legend.title = element_blank())+
+  theme(legend.title = element_text(color = "darkblue", size=7, face="bold"))+
+  scale_color_discrete(name="By different grids of clarity")+
+  theme(legend.key = element_rect(fill = "dodgerblue"))+
+  guides(color=guide_legend(override.aes = list(size=4)))+
+  geom_line(color="darkcyan")+
+  theme(panel.background =element_rect(fill="chocolate3"))+
+  theme(plot.background =element_rect(fill="skyblue"))+
+  facet_wrap(~cut+clarity, nrow = 4)
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(clarity)))+
+  geom_point()+
+  theme(legend.title = element_blank())+
+  theme(legend.title = element_text(color = "darkblue", size=7, face="bold"))+
+  scale_color_discrete(name="By different grids of clarity")+
+  theme(legend.key = element_rect(fill = "dodgerblue"))+
+  guides(color=guide_legend(override.aes = list(size=4)))+
+  geom_line(color="darkcyan")+
+  theme(panel.background =element_rect(fill="chocolate3"))+
+  theme(plot.background =element_rect(fill="skyblue"))+
+  facet_wrap(~color, nrow = 4, scales = "free") # scale free graphs in the multi-panel
+```
+
+
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(clarity)))+
+  geom_point()+
+  theme(legend.title = element_blank())+
+  theme(legend.title = element_text(color = "darkblue", size=7, face="bold"))+
+  scale_color_discrete(name="By different grids of clarity")+
+  theme(legend.key = element_rect(fill = "dodgerblue"))+
+  guides(color=guide_legend(override.aes = list(size=4)))+
+  geom_line(color="darkcyan")+
+  theme(panel.background =element_rect(fill="chocolate3"))+
+  theme(plot.background =element_rect(fill="skyblue"))+
+  facet_grid(color~cut)
+```
+
+
+```{r}
+library(ggthemes)
+# This package contains extra themes, scales, and geoms, and functions for and related to ggplot2
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(cut)))+
+  geom_point()+
+  scale_color_brewer(palette = "Set1") #changing the discrete category color
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=factor(cut)))+
+  geom_point()+
+  scale_color_tableau()  # use the tableau color
+```
+
+```{r}
+ggplot(diamonds, aes(x=price, y=carat, color=depth))+
+  geom_point()+
+  scale_color_gradient(low = "yellow", high = "red") #  scale_****_gradient creates a two colour gradient (low-high)
+```
+
+
+```{r}
+mid<-mean(diamonds$price)
+ggplot(diamonds, aes(x=price, y=carat, color=depth))+
+  geom_point()+
+  scale_color_gradient2()  
+# scale_****_gradient2 creates a diverging colour gradient (low-mid-high)
+```
+
+# Bar chart
+
+```{r}
+library(MASS)
+```
+
+```{r}
+ggplot(Cars93, aes(x=Type))+
+  geom_bar(width = 0.5, fill="royalblue4", color="red")+
+  ggtitle("Vehicle count by Category")
+```
+```{r}
+qplot(factor(Type), data=Cars93, geom="bar", fill=factor(Origin))
+```
+
+```{r}
+ggplot(Cars93, aes(Type, fill=Origin))+
+  geom_bar()
+```
+
+# Boxplot
+
+```{r}
+ggplot(Cars93, aes(x=Type, y=Price))+
+  geom_boxplot(width=0.5, fill="firebrick", color="cadetblue2", outlier.color = "purple", outlier.shape = 2)+
+  ggtitle("Boxplot of Price by Car Type")
+```
+## with plotly
+
+
+```{r}
+plot_ly(y= Cars93$MPG.highway, type="box")%>%
+  add_trace(y=Cars93$MPG.highwa)
+```
+
+```{r}
+plot_ly(y= Cars93$MPG.highway, type="box", boxpoints="all", jitter=0.3, pointpos=-1.8)
+```
+
+```{r}
+plot_ly( x =Cars93$Type, y = Cars93$MPG.city, color=Cars93$Airbag, type="box")
+```
+
+
+# Bubble plot
+
+```{r}
+bubble<-ggplot(Cars93, aes(x=EngineSize, y=MPG.city))+
+  geom_point(aes(size=Price, color="red"))+
+  scale_size_continuous(range = c(2,15))
+# +
+#   theme(legend.position = "bottom")
+bubble
+```
+
+## with plotly
+
+```{r}
+ggplotly(bubble)
+```
+
+# Donut Chart
+
+```{r}
+ggplot(Cars93)+
+  geom_rect(aes(fill=Cylinders, ymax=Max.Price, ymin=Min.Price, xmax=4, xmin=3))+
+  coord_polar(theta = "y")+
+  xlim(c(0,4))
+```
+
+
+
+# Map
+
+```{r}
+library(googleVis)
+head(state.x77)
+```
+
+```{r}
+states<-data.frame(state.name, state.x77)
+states
+```
+
+```{r}
+gmap<-gvisGeoChart(states, "state.name", "Area", options = list(region="US", dataMode="regions", width=900, hight=600))
+
+plot(gmap)
+```
+
+
+# Histogram
+
+```{r}
+histogram<-ggplot(Cars93, aes(RPM))+
+  geom_histogram( fill="firebrick", color="cadetblue2", bins=20)+
+  ggtitle("Histogram")
+
+histogram
+```
+## with plotly
+
+```{r}
+ggplotly(histogram)
+```
+
+# Line chart
+
+```{r}
+ggplot(Cars93, aes(x=RPM, y=Price))+
+  geom_line(color="cadetblue2")
+```
+# Pie chart
+
+```{r}
+ggplot(Cars93, aes(x=factor(1), fill=factor(Type)))+
+  geom_bar(width = 1)+
+  coord_polar(theta = "y")
+```
+
+# 3D Pie chart
+
+```{r}
+library(plotrix)
+```
+
+
+```{r}
+t<-table(Cars93$Type)
+t
+```
+
+```{r}
+par(mfrow=c(1,2))
+```
+
+```{r}
+pct<-paste(names(t),"\n", t,tsep="")
+pct
+```
+```{r}
+pie(t, labels = pct, main = "Pie chart of type of cars")
+```
+```{r}
+pie3D(t, labels = pct, main = "Pie chart of type of cars")
+```
+# Scatterplot
+
+```{r}
+library(gridExtra)
+```
+
+```{r}
+sp<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(color="dodgerblue", size=5)+
+  ggtitle("Basic Scatterplot")+
+  theme(plot.title = element_text(size=12, face="bold"))
+sp
+```
+
+```{r}
+sp2<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(aes(color=Length), size=5)+
+  ggtitle("Basic Scatterplot: Adding length variable")+
+  theme(plot.title = element_text(size=12, face="bold"))
+sp2
+```
+
+```{r}
+grid.arrange(sp, sp2)
+```
+```{r}
+grid.arrange(sp, sp2, nrow=1)
+```
+
+```{r}
+sp3<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(aes(color=factor(Origin)), size=5)+
+  ggtitle("Basic Scatterplot: Adding Origin variable")+
+  theme(plot.title = element_text(size=12, face="bold"))
+sp3
+```
+
+```{r}
+sp4<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(aes(color=factor(Origin)), size=5)+
+  scale_color_manual(values = c("red","blue"))+
+  ggtitle("Basic Scatterplot: Adding Custom Color")+
+  theme(plot.title = element_text(size=12, face="bold"))
+sp4
+```
+
+```{r}
+grid.arrange(sp3, sp4, nrow=1)
+```
+
+```{r}
+sp5<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(color="blue", size=5)+
+  geom_line()+
+  ggtitle("Basic Scatterplot: Adding lines")+
+  theme(plot.title = element_text(size=12, face="bold"))
+sp5
+```
+
+```{r}
+sp6<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(color="firebrick", size=5)+
+  geom_smooth(method = "lm", se=T, color="yellow")+ #se--Display confidence interval around smooth?
+  geom_smooth(method="rlm", se=T, color="green")+ #Fit a linear model by robust regression using an M estimator.
+  ggtitle("Basic Scatterplot: Adding Regression lines")+ 
+  theme(plot.title = element_text(size=12, face="bold"))
+sp6
+```
+```{r}
+grid.arrange(sp5, sp6, nrow=1)
+```
+
+```{r}
+sp7<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(color="firebrick", size=5)+
+  geom_smooth(method = "auto", se=T, color="yellow")+ 
+  geom_smooth(method="glm", se=T, color="green")+ 
+  ggtitle("Basic Scatterplot: Adding Regression lines")+ 
+  theme(plot.title = element_text(size=12, face="bold"))
+sp7
+```
+
+```{r}
+sp8<-ggplot(Cars93, aes(x=Horsepower, y=MPG.highway))+
+  geom_point(color="firebrick", size=5)+
+  geom_smooth(method = "gam", se=T, color="yellow")+ 
+  geom_smooth(method="loess", se=T, color="green")+ 
+  ggtitle("Basic Scatterplot: Adding Regression lines")+ 
+  theme(plot.title = element_text(size=12, face="bold"))
+sp8
+```
+
+
+```{r}
+grid.arrange(sp7, sp8, nrow=1)
+```
+
+
+# 3D Scatterplot
+
+```{r}
+library(scatterplot3d)
+library(Rcmdr)
+```
+
+
+```{r}
+scatter3d(data=Cars93,
+          MPG.highway~Length+Width|Origin, 
+          fit="linear",
+          residuals=T, 
+          parallel=F,
+          bg="black", 
+          axis.scales=T, 
+          grid=T,
+          ellipsoid=F)
+```
+
+
+# Stem-and-Leaf Plots
+
+```{r}
+stem(Cars93$MPG.city)
+```
+
+
+# Word Cloud 
+```{r}
+library(wordcloud)
+```
+```{r}
+words<-c("data", "data mining","analytics","statistics","graph","R","Python","Shiny","ggplot2")
+```
+
+
+```{r}
+freq<-c(132, 133, 433, 543,76,883,124,654,444)
+freq
+```
+
+```{r}
+data<-data.frame(words, freq)
+data
+```
+
+
+```{r}
+set.seed(1234)
+wordcloud(words=data$words,
+          freq = data$freq,
+          min.freq = 1,
+          c(8,0.3))
+```
+```{r}
+wordcloud(words=data$words,
+          freq = data$freq,
+          min.freq = 1,
+          c(8,0.3), 
+          max.words = 200,
+          random.order = F,
+          rot.per = 0.35) #proportion words with 90 degree rotation
+```
+
+# Coxcomb Plot
+```{r}
+ggplot(Cars93, aes(x=factor(Type)))+
+  geom_bar(width = 1, color="goldenrod1",fill="darkviolet")+
+  coord_polar()
+```
+
+```{r}
+ggplot(Cars93, aes(x=factor(Type)))+
+  geom_bar(width = 1, color="goldenrod1",fill="darkviolet")+
+  coord_polar(theta = "y")
+```
+
+## Polar chart with plotly 
+
+```{r}
+pc<-plot_ly(r=Cars93$Price, t=Cars93$RPM, color=Cars93$Airbags, mode="lines", colors="Set1")
+pc
+
+layout(pc, title="Cars price by RPM", orientation=-90, front="bold")
+```
+## Polar scatter plot with plotly 
+```{r}
+pc1<-plot_ly(r=Cars93$Price, t=Cars93$Horsepower, color=Cars93$Type, opacity=0.7, mode="markers", colors="Dark2")
+pc1
+
+layout(pc1,plot_bgcolor=toRGB("coral"),front="bold")
+```
+
+## Polar area plot with plotly 
+```{r}
+pc2<-plot_ly(r=Cars93$Price, t=Cars93$Horsepower, color=Cars93$Type, type="area")
+pc2
+
+layout(pc2, orientation=270, plot_bgcolor=toRGB("tan"), front="bold")
+```
+

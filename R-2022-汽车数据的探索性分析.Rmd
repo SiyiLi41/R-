@@ -1,0 +1,384 @@
+---
+title: "test-2022-"
+author: "Siyi Li"
+date: "15/04/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+a<-list(1,2,3,4,5,"Siyi")
+a[[4]]
+```
+
+
+```{r}
+b<-c(1,2,3,4,5,"Siyi")
+b
+```
+
+```{r}
+library(ggplot2)
+diamonds
+```
+
+
+```{r}
+names(diamonds)
+```
+
+```{r}
+library(MASS)
+Cars93
+```
+
+
+```{r}
+str(Cars93)
+```
+```{r}
+summary(Cars93)
+```
+
+```{r}
+library(Hmisc)
+describe(Cars93)
+```
+
+```{r}
+n_cars<-Cars93[,c
+               (5,7,8)]
+n_cars
+```
+```{r}
+apply(n_cars, 2, mean)
+apply(n_cars, 2, sd)
+
+library(e1071)
+apply(n_cars, 2, skewness)
+
+mean(n_cars$Price)
+sd(n_cars$Price)
+skewness(n_cars$Price)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(n_cars,
+       aes(x=Price))+
+  geom_boxplot()
+```
+
+
+```{r}
+ggplot(n_cars,
+       aes(x=Price, y=MPG.city))+
+  geom_point()+
+  geom_smooth()
+```
+```{r}
+ggplot(n_cars,
+       aes(x=Price))+
+  geom_density(fill="blue")
+```
+
+
+```{r}
+library(GGally)
+ggpairs(n_cars)
+```
+
+```{r}
+pairs(n_cars,main="correlation plot", col="blue", panel = points)
+```
+
+
+```{r}
+# Normal distribution
+pnorm(35, mean = mean(Cars93$MPG.highway), sd = sd(Cars93$MPG.highway), lower.tail = TRUE, log.p = FALSE)
+
+#一辆新车每加仑又行驶53千米的概率
+
+```
+
+```{r}
+pnorm(35, mean = mean(Cars93$MPG.highway), sd = sd(Cars93$MPG.highway), lower.tail = F, log.p = FALSE)
+```
+```{r}
+# Binomial Distribution
+pbinom(1, 93, prob-0.1)
+
+# 一个零件坏了的 概率为0.1 假设有93 辆汽车，至少一辆坏了零件的车被检测出来的概率
+```
+
+
+```{r}
+# Poisson Distribution
+ppois(250, 200, lower.tail = F)
+
+# 假设平均每分钟有200顾客访问该网站， 一分钟内有250名顾客访问该网站的概率
+```
+
+
+```{r}
+x<-fitdistr(Cars93$MPG.highway, densfun = "t")
+x$estimate
+x$sd
+x$vcov  #the estimated variance-covariance matrix
+x$loglik   #the log-likelihood
+x$n
+```
+
+
+```{r}
+y<-fitdistr(Cars93$MPG.highway, densfun = "normal")
+y$estimate
+y$sd
+y$vcov  #the estimated variance-covariance matrix
+y$loglik   #t
+```
+
+```{r}
+qqnorm(Cars93$MPG.highway)
+qqline(Cars93$MPG.highway)
+
+```
+```{r}
+range(Cars93$Fuel.tank.capacity)
+```
+
+```{r}
+cat<-c(9.2, 13.2,17.2,21.2,25.2)
+```
+
+```{r}
+options(digits = 2)
+t<-cut(Cars93$Fuel.tank.capacity, cat)
+t
+```
+
+
+```{r}
+as.data.frame(cbind(table(t)))
+```
+
+```{r}
+table(Cars93$Type)
+```
+
+```{r}
+table(Cars93$AirBags)
+```
+
+```{r}
+contTable<-table(Cars93$Type, Cars93$AirBags)
+contTable
+```
+
+```{r}
+prop.table(contTable)
+```
+
+```{r}
+prop.table(contTable, 1) #row percentage
+```
+
+
+```{r}
+prop.table(contTable,2) # colomn percentage
+```
+```{r}
+summary(contTable)
+```
+```{r}
+contTable1<-table(Cars93$Type, Cars93$AirBags,Cars93$Origin)
+contTable1
+```
+
+```{r}
+summary(contTable1)
+```
+
+```{r}
+library(nortest)
+ad.test(Cars93$Price)
+```
+
+```{r}
+cvm.test(Cars93$Price)
+```
+
+```{r}
+lillie.test(Cars93$Price)
+```
+
+```{r}
+pearson.test(Cars93$Price)
+```
+
+```{r}
+sf.test(Cars93$Price) #p-vlue <0.05, so the variable is not a Nnormal Distribution
+```
+
+
+```{r}
+library(corrplot)
+o<-cor(Cars93[,c("Horsepower","Length")])
+o
+```
+```{r}
+corrplot(o)
+corrplot(o, method="number", main="correlation plot")
+corrplot(o, method="circle", main="correlation plot")
+corrplot(o, method="ellipse", main="correlation plot")
+```
+```{r}
+# 已知方差的单侧均值检验
+
+mu<-mean(Cars93$MPG.highway)
+mu
+sigma<-sd(Cars93$MPG.highway)
+sigma
+n<-length(mean(Cars93$MPG.highway))
+n
+xbar=35
+Z<-(xbar-mu)/(sigma/sqrt(n))
+Z
+alpha=0.05
+Z1=qnorm(1-alpha)
+Z1
+ifelse(Z>Z1,"reject h0","accept h0")
+```
+
+
+```{r}
+#已知方差的双侧均值检验
+Z2=qnorm(1-alpha/2)
+Z2
+c(-Z2, Z2)
+ifelse(Z>Z2|Z<Z2,"reject h0","accept h0")
+```
+
+
+
+
+```{r}
+mileage<-subset(Cars93, Cars93$RPM>5000)
+mileage
+```
+
+
+```{r}
+table(mileage$Origin)
+```
+
+```{r}
+#单测比例检验
+p1<-17/57
+p0<-0.4
+n<-length(mileage)
+n
+z<-(p1-p0)/sqrt(p0*(1-p0)/n)
+z
+
+alpha=0.05
+z1<-qnorm(1-alpha)
+z1
+
+ifelse(z>z1, "rejedt h0", "accept h0")
+```
+
+```{r}
+#双侧比例检验
+z2<-qnorm(1-alpha/2)
+z2
+c(-z2, z2)
+
+ifelse(z>z2|z<z2, "rejedt h0", "accept h0")
+```
+
+
+```{r}
+# 成对检验
+# h0, 无显著差异
+# h1，有显著差异
+
+t.test(Cars93$Min.Price, Cars93$Max.Price, paired = T)
+# p-value < 0.05, the difference between max price and the min price is significant
+```
+
+
+```{r}
+#进行t检验2💰， 要检查数据的正态性， 用shapiro检验
+shapiro.test(Cars93$MPG.city)
+
+qqnorm(Cars93$MPG.city)
+qqline(Cars93$MPG.city)
+#该变量不是正态分布， 所以要用非参数方法
+```
+```{r}
+# 无非参数方法
+
+## Wilcoxon --- 当正态假设不成立
+wilcox.test(Cars93$MPG.city~Cars93$Man.trans.avail, correct=F)
+# 自动挡和手动挡汽车的平均行车里程是否有差别
+
+# 若两个样本恰好成对但又不满足正态假设 则使用参数paired
+wilcox.test(Cars93$MPG.city, Cars93$MPG.highway, paired=T)
+
+
+
+
+## Mann-Whitney-Wilcoxon --- 两个样本不成对，独立且不满足正态分布
+wilcox.test(Cars93$MPG.city~Cars93$Man.trans.avail, data=Cars93)
+
+
+
+## Kruskal-Wallis---比较两组以上的平均值， 无参方法的方差分析， 无分布的统计检验
+kruskal.test(Cars93$MPG.city~Cars93$Cylinders, data=Cars93)
+
+```
+
+
+
+
+```{r}
+#比较双样本方差， 采用F检验
+var.test(Cars93$MPG.highway~Cars93$Man.trans.avail, data=Cars93)
+```
+```{r}
+# 单因子方差分析
+c<-aov(Cars93$RPM~Cars93$Cylinders)
+c
+summary(c)
+# p-value<0.05, reject h0
+# h0, 不同缸数的平均RPM无差异
+# h1，至少一种缸数的平均RPM有差异
+
+
+
+# 事后检验 ---为了识别哪一种缸数的平均RPM存在显著差异
+TukeyHSD(c)
+
+#p-adj<0.05， RPM的平均差异显著想就有别于其他分组
+```
+
+
+```{r}
+# 双因子方差分析
+d<-aov(Cars93$RPM~Cars93$Origin+Cars93$AirBags)
+d
+
+summary(d)
+
+TukeyHSD(d)
+```
+
+
+
